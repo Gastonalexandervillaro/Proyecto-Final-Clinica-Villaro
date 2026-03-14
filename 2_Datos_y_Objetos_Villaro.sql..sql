@@ -1,0 +1,38 @@
+USE clinica_villaro;
+
+-- 1. Tipos de Usuario
+INSERT INTO tipo_usuario (descripcion) VALUES ('Administrador'), ('Recepcionista'), ('Médico');
+
+-- 2. Usuarios
+INSERT INTO usuario_sistema (nombre, apellido, email, password, id_tipo_usuario) 
+VALUES ('Gaston', 'Villaro', 'gaston2283@gmail.com', '123456', 1);
+
+-- 3. Obras Sociales
+INSERT INTO obra_social (nombre, plan) 
+VALUES ('OSDE', '210'), ('OSEP', 'Tradicional'), ('PAMI', 'Jubilados');
+
+-- 4. Especialidades
+INSERT INTO especialidad (nombre) 
+VALUES ('Pediatría'), ('Cardiología'), ('Clínica Médica');
+
+-- 5. Médicos
+INSERT INTO medico (nombre, apellido, matricula, id_especialidad) 
+VALUES ('Ricardo', 'Perez', 'M12345', 2), ('Laura', 'Estevez', 'M67890', 1);
+
+-- 6. Pacientes (ESTO ES LO QUE BUSCABAS EN EL SELECT)
+INSERT INTO paciente (nombre, apellido, dni, fecha_nacimiento, id_obra_social) 
+VALUES ('Juan', 'Rodriguez', '25123456', '1985-05-12', 1),
+       ('Ana', 'Lopez', '30987654', '1992-10-25', 2);
+
+-- 7. Consultorios
+INSERT INTO consultorio (numero_sala, piso) VALUES ('101', '1'), ('202', '2');
+
+-- 8. Proveedores
+INSERT INTO proveedor (razon_social, telefono) VALUES ('Droguería Mendoza', '2614445566');
+
+-- 9. Insumos
+INSERT INTO insumo (nombre, stock, id_proveedor) VALUES ('Gasa estéril', 100, 1);
+
+-- 10. Turnos
+INSERT INTO turno (fecha_turno, estado, id_paciente, id_medico, id_consultorio) 
+VALUES ('2026-03-20 09:00:00', 'Pendiente', 1, 1, 1);
