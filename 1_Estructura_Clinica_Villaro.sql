@@ -2,10 +2,7 @@ DROP DATABASE IF EXISTS clinica_villaro;
 CREATE DATABASE clinica_villaro;
 USE clinica_villaro;
 
--- ==========================================
--- 1. TABLAS 
--- ==========================================
-
+-- TABLAS EN PLURAL (REQUISITO UNIFICACIÓN)
 CREATE TABLE tipos_usuarios (
     id_tipo_usuario INT PRIMARY KEY AUTO_INCREMENT,
     descripcion VARCHAR(50) NOT NULL
@@ -74,7 +71,7 @@ CREATE TABLE insumos (
 CREATE TABLE turnos (
     id_turno INT PRIMARY KEY AUTO_INCREMENT,
     fecha_turno DATETIME,
-    estado VARCHAR(20), -- 'Pendiente', 'Realizado', 'Cancelado'
+    estado VARCHAR(20),
     id_paciente INT,
     id_medico INT,
     id_consultorio INT,
@@ -127,119 +124,3 @@ CREATE TABLE log_auditoria (
     fecha_accion TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     usuario_accion VARCHAR(50)
 );
-
--- ==========================================
--- 2. VISTAS (MÍNIMO 5) 
--- ==========================================
-
--- 1. Turnos Pendientes
-CREATE OR REPLACE VIEW v_turnos_pendientes AS
-SELECT t.id_turno, t.fecha_turno, p.apellido AS paciente, m.apellido AS medico
-FROM turnos t
-JOIN pacientes p ON t.id_paciente = p.id_paciente
-JOIN medicos m ON t.id_medico = m.id_medico
-WHERE t.estado = 'Pendiente';
-
--- 2. Demanda por Especialidad (Corregido 'nombre')
-CREATE OR REPLACE VIEW v_demanda_especialidades AS
-SELECT e.nombre AS especialidad, COUNT(t.id_turno) AS total_turnos
-FROM especialidades e
-LEFT JOIN medicos m ON e.id_especialidad = m.id_especialidad
-LEFT JOIN turnos t ON m.id_medico = t.id_medico
-GROUP BY e.nombre;
-
--- 3. Insumos Críticos
-CREATE OR REPLACE VIEW v_stock_insumos_criticos AS
-SELECT nombre, stock FROM insumos WHERE stock < 10;
-
--- 4. Facturación por Obra Social
-CREATE OR REPLACE VIEW v_facturacion_por_os AS
-SELECT os.nombre, SUM(fc.monto_total) AS total_recaudado
-FROM obras_sociales os
-JOIN pacientes p ON os.id_obra_social = p.id_obra_social
-JOIN facturas_cabecera fc ON p.id_paciente = fc.id_paciente
-GROUP BY os.nombre;
-
--- 5. Listado de Profesionales y Salas
-CREATE OR REPLACE VIEW v_profesionales_salas AS
-SELECT DISTINCT m.apellido, e.nombre AS especialidad, c.numero_sala
-FROM medicos m
-JOIN especialidades e ON m.id_especialidad = e.id_especialidad
-JOIN turnos t ON m.id_medico = t.id_medico
-JOIN consultorios c ON t.id_consultorio = c.id_consultorio;
-
--- ==========================================
--- 3. FUNCIONES 
--- ==========================================
-
-DELIMITER //
--- Calcular edad
-CREATE FUNCTION fn_calcular_edad(fecha_nac DATE) RETURNS INT
-DETERMINISTIC
-BEGIN
-    RETURN TIMESTAMPDIFF(YEAR, fecha_nac, CURDATE());
-END //
-
--- Obtener nombre de obra social por ID
-CREATE FUNCTION fn_get_os_nombre(id_os INT) RETURNS VARCHAR(100)
-DETERMINISTIC
-BEGIN
-    DECLARE v_nombre VARCHAR(100);
-    SELECT nombre INTO v_nombre FROM obras_sociales WHERE id_obra_social = id_os;
-    RETURN v_nombre;
-END //
-DELIMITER ;
-
--- ==========================================
--- 4. STORED PROCEDURES 
--- ==========================================
-
-DELIMITER //
--- Registro rápido de paciente
-CREATE PROCEDURE sp_nuevo_paciente(
-    IN p_nombre VARCHAR(100),
-    IN p_apellido VARCHAR(100),
-    IN p_dni VARCHAR(15),
-    IN p_fecha_nac DATE,
-    IN p_id_os INT
-)
-BEGIN
-    INSERT INTO pacientes (nombre, apellido, dni, fecha_nacimiento, id_obra_social)
-    VALUES (p_nombre, p_apellido, p_dni, p_fecha_nac, p_id_os);
-END //
-
--- Reposición de Stock
-CREATE PROCEDURE sp_reponer_stock(
-    IN p_id_insumo INT,
-    IN p_cantidad INT
-)
-BEGIN
-    UPDATE insumos SET stock = stock + p_cantidad WHERE id_insumo = p_id_insumo;
-END //
-DELIMITER ;
-
--- ==========================================
--- 5. TRIGGERS 
--- ==========================================
-
-DELIMITER //
--- Auditoría de Pacientes (Apunta a log_auditoria)
-CREATE TRIGGER tr_audit_pacientes_insert
-AFTER INSERT ON pacientes
-FOR EACH ROW
-BEGIN
-    INSERT INTO log_auditoria (nombre_tabla, tipo_accion, usuario_accion)
-    VALUES ('pacientes', 'INSERT', USER());
-END //
-
--- Auditoría de Seguridad en Usuarios (Cierre de brecha que pidió Leonel)
-CREATE TRIGGER tr_audit_usuarios_pass_update
-BEFORE UPDATE ON usuarios_sistema
-FOR EACH ROW
-BEGIN
-    IF OLD.password <> NEW.password THEN
-        INSERT INTO log_auditoria (nombre_tabla, tipo_accion, usuario_accion)
-        VALUES ('usuarios_sistema', 'UPDATE_PASS', USER());
-    END IF;
-END //
-DELIMITER ;
