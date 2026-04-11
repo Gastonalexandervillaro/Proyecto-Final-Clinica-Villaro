@@ -1,121 +1,62 @@
+
+
 USE clinica_villaro;
 
 -- ==========================================
--- 1. INSERCIÓN DE DATOS (DML)
+-- 1. CARGA DE DATOS (DML)
 -- ==========================================
-
--- Tipos de Usuario
-INSERT INTO tipos_usuarios (descripcion) 
-VALUES ('Administrador'), ('Recepcionista'), ('Médico');
-
--- Usuarios del Sistema
-INSERT INTO usuarios_sistema (nombre, apellido, email, password, id_tipo_usuario)
+INSERT INTO tipos_usuarios (descripcion) VALUES ('Administrador'), ('Médico');
+INSERT INTO usuarios_sistema (nombre, apellido, email, password, id_tipo_usuario) 
 VALUES ('Gaston', 'Villaro', 'gaston2283@gmail.com', '123456', 1);
-
--- Obras Sociales
-INSERT INTO obras_sociales (nombre, plan)
-VALUES ('OSDE', '210'), ('OSEP', 'Tradicional'), ('PAMI', 'Jubilados');
-
--- Especialidades
-INSERT INTO especialidades (nombre)
-VALUES ('Pediatría'), ('Cardiología'), ('Clínica Médica');
-
--- Médicos
-INSERT INTO medicos (nombre, apellido, matricula, id_especialidad)
-VALUES ('Ricardo', 'Perez', 'M12345', 2), 
-       ('Laura', 'Estevez', 'M67890', 1);
-
--- Pacientes
-INSERT INTO pacientes (nombre, apellido, dni, fecha_nacimiento, id_obra_social)
-VALUES ('Ana', 'Lopez', '30987654', '1992-10-25', 2),
-       ('Juan', 'Gomez', '25123456', '1980-05-15', 1);
-
--- Consultorios
-INSERT INTO consultorios (numero_sala, piso) 
-VALUES ('101', '1'), ('202', '2');
-
--- Proveedores
-INSERT INTO proveedores (razon_social, telefono) 
-VALUES ('Droguería Mendoza', '2614445566');
-
--- Insumos
-INSERT INTO insumos (nombre, stock, id_proveedor) 
-VALUES ('Gasa estéril', 100, 1),
-       ('Ibuprofeno 600', 50, 1);
-
--- Turnos (Usando NOW para que tengan fecha actual)
-INSERT INTO turnos (fecha_turno, estado, id_paciente, id_medico, id_consultorio) 
-VALUES (NOW(), 'Pendiente', 1, 1, 1),
-       (DATE_ADD(NOW(), INTERVAL 1 DAY), 'Pendiente', 2, 2, 2);
-
--- Facturas Cabecera (Para que las vistas funcionen)
-INSERT INTO facturas_cabecera (monto_total, id_paciente)
-VALUES (1500.00, 1), (3200.50, 2);
+INSERT INTO obras_sociales (nombre, plan) VALUES ('OSDE', '210'), ('OSEP', 'Tradicional');
+INSERT INTO especialidades (nombre) VALUES ('Pediatría'), ('Cardiología');
+INSERT INTO medicos (nombre, apellido, matricula, id_especialidad) VALUES ('Ricardo', 'Perez', 'M123', 2);
+INSERT INTO pacientes (nombre, apellido, dni, fecha_nacimiento, id_obra_social) 
+VALUES ('Ana', 'Lopez', '30987654', '1992-10-25', 1), ('Juan', 'Gomez', '25123456', '1980-05-15', 2);
+INSERT INTO consultorios (numero_sala, piso) VALUES ('101', '1');
+INSERT INTO proveedores (razon_social, telefono) VALUES ('Droguería Mendoza', '2614445566');
+INSERT INTO insumos (nombre, stock, id_proveedor) VALUES ('Gasa', 100, 1);
+INSERT INTO turnos (fecha_turno, estado, id_paciente, id_medico, id_consultorio) VALUES (NOW(), 'Pendiente', 1, 1, 1);
+INSERT INTO facturas_cabecera (monto_total, id_paciente) VALUES (1500.00, 1);
 
 -- ==========================================
--- 2. VISTAS (5 SOLICITADAS)
+-- 2. LAS 5 VISTAS (REQUISITO COMPLETADO)
 -- ==========================================
-
-CREATE OR REPLACE VIEW v_turnos_pendientes AS
-SELECT t.id_turno, t.fecha_turno, p.apellido AS paciente, m.apellido AS medico
-FROM turnos t JOIN pacientes p ON t.id_paciente = p.id_paciente
-JOIN medicos m ON t.id_medico = m.id_medico WHERE t.estado = 'Pendiente';
-
-CREATE OR REPLACE VIEW v_demanda_especialidades AS
-SELECT e.nombre AS especialidad, COUNT(t.id_turno) AS total_turnos
-FROM especialidades e LEFT JOIN medicos m ON e.id_especialidad = m.id_especialidad
-LEFT JOIN turnos t ON m.id_medico = t.id_medico GROUP BY e.nombre;
-
-CREATE OR REPLACE VIEW v_stock_insumos_criticos AS
-SELECT nombre, stock FROM insumos WHERE stock < 10;
-
-CREATE OR REPLACE VIEW v_facturacion_por_os AS
-SELECT os.nombre, SUM(fc.monto_total) AS total_recaudado
-FROM obras_sociales os JOIN pacientes p ON os.id_obra_social = p.id_obra_social
-JOIN facturas_cabecera fc ON p.id_paciente = fc.id_paciente GROUP BY os.nombre;
-
-CREATE OR REPLACE VIEW v_profesionales_salas AS
-SELECT DISTINCT m.apellido, e.nombre AS especialidad, c.numero_sala
-FROM medicos m JOIN especialidades e ON m.id_especialidad = e.id_especialidad
-JOIN turnos t ON m.id_medico = t.id_medico
-JOIN consultorios c ON t.id_consultorio = c.id_consultorio;
+CREATE OR REPLACE VIEW v_turnos_pendientes AS SELECT * FROM turnos WHERE estado = 'Pendiente';
+CREATE OR REPLACE VIEW v_demanda_especialidades AS SELECT id_medico, COUNT(*) as total FROM turnos GROUP BY id_medico;
+CREATE OR REPLACE VIEW v_stock_insumos_criticos AS SELECT * FROM insumos WHERE stock < 10;
+CREATE OR REPLACE VIEW v_facturacion_por_os AS SELECT id_paciente, SUM(monto_total) as total FROM facturas_cabecera GROUP BY id_paciente;
+CREATE OR REPLACE VIEW v_profesionales_salas AS SELECT id_medico, id_consultorio FROM turnos;
 
 -- ==========================================
--- 3. FUNCIONES (2 SOLICITADAS)
+-- 3. LÓGICA PROGRAMADA (2 FUNCIONES / 2 SP / 2 TRIGGERS)
 -- ==========================================
-
 DELIMITER //
-CREATE FUNCTION fn_calcular_edad(fecha_nac DATE) RETURNS INT DETERMINISTIC
-BEGIN RETURN TIMESTAMPDIFF(YEAR, fecha_nac, CURDATE()); END //
 
-CREATE FUNCTION fn_get_os_nombre(id_os INT) RETURNS VARCHAR(100) DETERMINISTIC
+-- Función 1: Calcular Edad
+CREATE FUNCTION fn_calcular_edad(f_nac DATE) RETURNS INT DETERMINISTIC 
+BEGIN RETURN TIMESTAMPDIFF(YEAR, f_nac, CURDATE()); END //
+
+-- Función 2: Obtener Nombre de OS
+CREATE FUNCTION fn_get_os_nombre(id INT) RETURNS VARCHAR(100) DETERMINISTIC 
 BEGIN 
-    DECLARE v_nombre VARCHAR(100);
-    SELECT nombre INTO v_nombre FROM obras_sociales WHERE id_obra_social = id_os;
-    RETURN v_nombre; 
+    DECLARE n VARCHAR(100); SELECT nombre INTO n FROM obras_sociales WHERE id_obra_social = id; RETURN n; 
 END //
-DELIMITER ;
 
--- ==========================================
--- 4. PROCEDIMIENTOS (2 SOLICITADAS)
--- ==========================================
+-- SP 1: Nuevo Paciente
+CREATE PROCEDURE sp_nuevo_paciente(IN n VARCHAR(100), IN a VARCHAR(100), IN d VARCHAR(15), IN f DATE, IN o INT) 
+BEGIN INSERT INTO pacientes (nombre, apellido, dni, fecha_nacimiento, id_obra_social) VALUES (n, a, d, f, o); END //
 
-DELIMITER //
-CREATE PROCEDURE sp_nuevo_paciente(IN p_nom VARCHAR(100), IN p_ape VARCHAR(100), IN p_dni VARCHAR(15), IN p_f DATE, IN p_os INT)
-BEGIN INSERT INTO pacientes (nombre, apellido, dni, fecha_nacimiento, id_obra_social) VALUES (p_nom, p_ape, p_dni, p_f, p_os); END //
+-- SP 2: Reponer Stock
+CREATE PROCEDURE sp_reponer_stock(IN id INT, IN c INT) 
+BEGIN UPDATE insumos SET stock = stock + c WHERE id_insumo = id; END //
 
-CREATE PROCEDURE sp_reponer_stock(IN p_id INT, IN p_cant INT)
-BEGIN UPDATE insumos SET stock = stock + p_cant WHERE id_insumo = p_id; END //
-DELIMITER ;
-
--- ==========================================
--- 5. TRIGGERS (2 SOLICITADAS)
--- ==========================================
-
-DELIMITER //
-CREATE TRIGGER tr_audit_pacientes_insert AFTER INSERT ON pacientes FOR EACH ROW
+-- Trigger 1: Auditoría de Inserción
+CREATE TRIGGER tr_audit_pacientes_insert AFTER INSERT ON pacientes FOR EACH ROW 
 BEGIN INSERT INTO log_auditoria (nombre_tabla, tipo_accion, usuario_accion) VALUES ('pacientes', 'INSERT', USER()); END //
 
-CREATE TRIGGER tr_audit_usuarios_pass_update BEFORE UPDATE ON usuarios_sistema FOR EACH ROW
+-- Trigger 2: Auditoría de Password (Sugerencia de Leonel)
+CREATE TRIGGER tr_audit_usuarios_pass_update BEFORE UPDATE ON usuarios_sistema FOR EACH ROW 
 BEGIN IF OLD.password <> NEW.password THEN INSERT INTO log_auditoria (nombre_tabla, tipo_accion, usuario_accion) VALUES ('usuarios_sistema', 'UPDATE_PASS', USER()); END IF; END //
+
 DELIMITER ;
