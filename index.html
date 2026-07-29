@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="es" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Clínica Villaro - Centro Médico Integral</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://unpkg.com/lucide@latest"></script>
+</head>
+<body class="bg-slate-50 text-slate-800 font-sans antialiased">
+
+  <!-- Navbar Institucional -->
+  <header class="bg-white border-b border-blue-100 sticky top-0 z-50 shadow-sm">
+    <div class="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
+      <div class="flex items-center space-x-3">
+        <div class="bg-blue-600 p-2.5 rounded-xl text-white shadow-md shadow-blue-500/20">
+          <i data-lucide="cross"></i>
+        </div>
+        <div>
+          <h1 class="text-xl font-extrabold text-blue-950 tracking-tight">CLÍNICA VILLARO</h1>
+          <p class="text-[10px] text-blue-600 font-bold tracking-widest uppercase">Atención & Especialidades Médicas</p>
+        </div>
+      </div>
+      <nav class="hidden md:flex items-center space-x-8 text-sm font-semibold text-slate-600">
+        <a href="#inicio" class="hover:text-blue-600 transition">Inicio</a>
+        <a href="#especialidades" class="hover:text-blue-600 transition">Especialidades</a>
+        <a href="#solicitar-turno" class="bg-blue-600 hover:bg-blue-700 text-white px-5 py-2.5 rounded-xl transition shadow-md shadow-blue-600/20 flex items-center gap-2">
+          <i data-lucide="calendar" class="w-4 h-4"></i> Solicitar Turno
+        </a>
+      </nav>
+    </div>
+  </header>
+
+  <!-- Portada Principal -->
+  <section id="inicio" class="bg-white py-8 px-6 border-b border-blue-50">
+    <div class="max-w-6xl mx-auto space-y-6">
+      
+      <!-- Banner Medico de Portada -->
+      <div class="relative rounded-3xl overflow-hidden shadow-2xl border border-blue-100 bg-blue-900">
+        <img 
+          src="https://images.unsplash.com/photo-1519494026892-80bbd2d6fd0d?auto=format&fit=crop&w=1600&q=80" 
+          alt="Fachada Clínica Villaro" 
+          class="w-full h-auto max-h-[450px] object-cover object-center opacity-90"
+        >
+        
+        <!-- Cartel Marcatorio de Marca -->
+        <div class="absolute top-6 left-6 bg-white/95 backdrop-blur-md border border-blue-200 p-4 rounded-2xl shadow-xl flex items-center gap-3">
+          <div class="bg-blue-600 p-2.5 rounded-xl text-white">
+            <i data-lucide="cross" class="w-6 h-6"></i>
+          </div>
+          <div>
+            <h2 class="text-lg font-black text-blue-950 tracking-tight leading-none">CLÍNICA VILLARO</h2>
+            <p class="text-[10px] text-blue-600 font-bold uppercase mt-0.5">Centro Médico Hospitalario</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Texto Institucional -->
+      <div class="text-center max-w-3xl mx-auto space-y-3 pt-2">
+        <span class="inline-flex items-center gap-2 bg-blue-50 text-blue-700 border border-blue-200 text-xs px-4 py-1.5 rounded-full font-bold uppercase tracking-wider">
+          <span class="w-2 h-2 rounded-full bg-blue-600"></span> Guardia 24hs & Consultorios de Alta Complejidad
+        </span>
+        <h2 class="text-3xl sm:text-4xl font-extrabold text-blue-950 tracking-tight">
+          Bienvenido a Clínica Villaro
+        </h2>
+        <p class="text-slate-600 text-base leading-relaxed">
+          Ponemos a tu disposición tecnología de diagnóstico avanzada, un cuerpo médico destacado y un sistema digital unificado para gestionar tus turnos de forma rápida y segura.
+        </p>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- Especialidades Médicas (Iconos 100% estables que nunca se rompen) -->
+  <section id="especialidades" class="py-16 bg-slate-50">
+    <div class="max-w-7xl mx-auto px-6 space-y-12">
+      <div class="text-center max-w-2xl mx-auto space-y-2">
+        <h3 class="text-xs font-bold text-blue-600 uppercase tracking-widest">Nuestras Prestaciones</h3>
+        <h2 class="text-3xl font-extrabold text-blue-950">Especialidades Médicas</h2>
+        <p class="text-slate-500 text-sm">Contamos con profesionales capacitados en las principales ramas de la salud.</p>
+      </div>
+
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+        
+        <!-- Cardiología -->
+        <div class="p-6 bg-white border border-blue-100 rounded-2xl space-y-3 shadow-sm hover:shadow-md transition">
+          <div class="w-12 h-12 bg-blue-50 text-blue-600 rounded-xl flex items-center justify-center font-bold">
+            <i data-lucide="heart-pulse" class="w-6 h-6"></i>
+          </div>
+          <h4 class="font-bold text-blue-950 text-base">Cardiología</h4>
+          <p class="text-xs text-slate-500 leading-relaxed">Chequeos preventivos, electrocardiogramas, ergometrías y monitoreo cardiovascular.</p>
+        </div>
+
+        <!-- Pediatría -->
+        <div class="p-6 bg-white border border-blue-100 rounded-2xl space-y-3 shadow-sm hover:shadow-md transition">
+          <div class="w-12 h-12 bg-blue-50 text-blue-600 rounded-xl flex items-center justify-center font-bold">
+            <i data-lucide="baby" class="w-6 h-6"></i>
+          </div>
+          <h4 class="font-bold text-blue-950 text-base">Pediatría</h4>
+          <p class="text-xs text-slate-500 leading-relaxed">Atención médica dedicada y afectuosa para los más pequeños con control de crecimiento.</p>
+        </div>
+
+        <!-- Diagnóstico por Imágenes -->
+        <div class="p-6 bg-white border border-blue-100 rounded-2xl space-y-3 shadow-sm hover:shadow-md transition">
+          <div class="w-12 h-12 bg-blue-50 text-blue-600 rounded-xl flex items-center justify-center font-bold">
+            <i data-lucide="microscope" class="w-6 h-6"></i>
+          </div>
+          <h4 class="font-bold text-blue-950 text-base">Diagnóstico por Imágenes</h4>
+          <p class="text-xs text-slate-500 leading-relaxed">Ecografías de alta resolución, laboratorio de análisis clínicos e informes digitales.</p>
+        </div>
+
+        <!-- Obras Sociales -->
+        <div class="p-6 bg-white border border-blue-100 rounded-2xl space-y-3 shadow-sm hover:shadow-md transition">
+          <div class="w-12 h-12 bg-blue-50 text-blue-600 rounded-xl flex items-center justify-center font-bold">
+            <i data-lucide="shield-check" class="w-6 h-6"></i>
+          </div>
+          <h4 class="font-bold text-blue-950 text-base">Obras Sociales</h4>
+          <p class="text-xs text-slate-500 leading-relaxed">Convenios con OSDE, Swiss Medical, OSEP y atención particular con facilidades.</p>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- Formulario de Turnos -->
+  <section id="solicitar-turno" class="py-16 bg-blue-50/60 border-t border-blue-100">
+    <div class="max-w-3xl mx-auto px-6 space-y-8">
+      
+      <div class="text-center space-y-2">
+        <span class="text-xs font-bold text-blue-600 uppercase tracking-widest bg-blue-100 border border-blue-200 px-3.5 py-1 rounded-full">
+          Portal On-Line
+        </span>
+        <h2 class="text-3xl font-extrabold text-blue-950">Solicitar Turno Médico</h2>
+        <p class="text-slate-600 text-sm">Completá el formulario para agendar tu consulta médica en Clínica Villaro.</p>
+      </div>
+
+      <div class="bg-white border border-blue-100 p-8 rounded-3xl shadow-xl space-y-6">
+        <form id="turnoForm" class="space-y-4">
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <div>
+              <label class="block text-xs font-bold text-blue-950 mb-1.5 uppercase tracking-wider">Especialidad</label>
+              <select id="especialidad" class="w-full bg-slate-50 border border-slate-200 rounded-xl p-3 text-sm text-slate-800">
+                <option value="Clínica Médica">Clínica Médica</option>
+                <option value="Cardiología">Cardiología</option>
+                <option value="Pediatría">Pediatría</option>
+                <option value="Traumatología">Traumatología</option>
+              </select>
+            </div>
+            <div>
+              <label class="block text-xs font-bold text-blue-950 mb-1.5 uppercase tracking-wider">Médico / Profesional</label>
+              <select id="medico" class="w-full bg-slate-50 border border-slate-200 rounded-xl p-3 text-sm text-slate-800">
+                <option value="Dr. Carlos Mendoza">Dr. Carlos Mendoza (Mat. 4851)</option>
+                <option value="Dra. Lucía Fernández">Dra. Lucía Fernández (Mat. 6120)</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <div>
+              <label class="block text-xs font-bold text-blue-950 mb-1.5 uppercase tracking-wider">Fecha deseada</label>
+              <input type="date" id="fecha_turno" required class="w-full bg-slate-50 border border-slate-200 rounded-xl p-3 text-sm text-slate-800">
+            </div>
+            <div>
+              <label class="block text-xs font-bold text-blue-950 mb-1.5 uppercase tracking-wider">Horario</label>
+              <select id="hora_turno" class="w-full bg-slate-50 border border-slate-200 rounded-xl p-3 text-sm text-slate-800">
+                <option value="09:00 hs">09:00 hs</option>
+                <option value="15:00 hs">15:00 hs</option>
+              </select>
+            </div>
+          </div>
+
+          <hr class="border-blue-50 my-2">
+
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <div>
+              <label class="block text-xs font-bold text-blue-950 mb-1.5 uppercase tracking-wider">Nombre</label>
+              <input type="text" id="nombre" required placeholder="Ej: Roberto" class="w-full bg-slate-50 border border-slate-200 rounded-xl p-3 text-sm text-slate-800">
+            </div>
+            <div>
+              <label class="block text-xs font-bold text-blue-950 mb-1.5 uppercase tracking-wider">Apellido</label>
+              <input type="text" id="apellido" required placeholder="Ej: Perez" class="w-full bg-slate-50 border border-slate-200 rounded-xl p-3 text-sm text-slate-800">
+            </div>
+          </div>
+
+          <button type="submit" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-3.5 rounded-xl transition shadow-lg shadow-blue-600/25 flex items-center justify-center gap-2 text-sm mt-4">
+            <i data-lucide="check-circle-2" class="w-5 h-5"></i> Confirmar Turno
+          </button>
+        </form>
+
+        <div id="comprobante" class="hidden bg-emerald-50 border border-emerald-200 p-6 rounded-2xl text-center space-y-3">
+          <h4 class="text-lg font-bold text-emerald-950">¡Turno Reservado con Éxito!</h4>
+          <div id="comprobanteDetalle" class="bg-white p-4 rounded-xl border border-emerald-100 text-left text-xs space-y-1 font-mono"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="bg-white border-t border-blue-100 py-8 text-center text-xs text-slate-500 space-y-2">
+    <p class="font-semibold text-blue-950">Clínica Villaro — Sistema de Gestión Médica Integrado</p>
+    <p class="text-slate-500">Desarrollo: Gaston Alexander Villaro | Tecnicatura Superior en Desarrollo de Software</p>
+  </footer>
+
+  <script>
+    lucide.createIcons();
+    const form = document.getElementById("turnoForm");
+    const comprobante = document.getElementById("comprobante");
+    const comprobanteDetalle = document.getElementById("comprobanteDetalle");
+
+    form.addEventListener("submit", (e) => {
+      e.preventDefault();
+      comprobanteDetalle.innerHTML = `
+        <p><strong>Paciente:</strong> ${document.getElementById("nombre").value} ${document.getElementById("apellido").value}</p>
+        <p><strong>Especialidad:</strong> ${document.getElementById("especialidad").value}</p>
+        <p><strong>Profesional:</strong> ${document.getElementById("medico").value}</p>
+        <p><strong>Fecha y Hora:</strong> ${document.getElementById("fecha_turno").value} - ${document.getElementById("hora_turno").value}</p>
+      `;
+      form.classList.add("hidden");
+      comprobante.classList.remove("hidden");
+    });
+  </script>
+</body>
+</html>
