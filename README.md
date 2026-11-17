@@ -1,31 +1,42 @@
-# 🏥 Clínica Villaro - Sistema de Gestión de Turnos
+# 🏥 Clínica Villaro — Proyecto Final de Base de Datos (MySQL)
 
-🔗 **Demostración en vivo:** https://GastonAlexanderVillaro.github.io/Proyecto-Final-Clinica-Villaro
+Sistema de gestión de base de datos relacional diseñado e implementado para la administración integral de una clínica médica. Incluye modelado EER normalizado, carga de datos de prueba y lógica programable mediante Vistas, Funciones y Triggers en MySQL.
 
-# Proyecto-Final-Clinica-Villaro
-Sistema de gestión de base de datos relacional para una clínica médica. Incluye diseño de esquema EER, carga de datos y lógica programable con Vistas y Funciones en MySQL. 
-# 🏥 Proyecto Clínica Villaro - Base de Datos SQL
+🔗 **Repositorio / Documentación:** [Proyecto-Final-Clinica-Villaro](https://GastonAlexanderVillaro.github.io/Proyecto-Final-Clinica-Villaro)
 
-Este proyecto consiste en el diseño e implementación de una base de datos robusta para la gestión integral de una clínica médica.
-
-## 🚀 Tecnologías utilizadas
-* **Motor de DB:** MySQL
-* **Herramientas:** MySQL Workbench
-* **Conceptos:** Normalización, Integridad Referencial, Objetos Programables.
+---
 
 ## 📊 Características del Proyecto
-* **Estructura:** 15 tablas interconectadas que cubren Pacientes, Médicos, Turnos, Insumos y Facturación.
-* **Inteligencia:** Implementación de Vistas para reportes, Funciones de búsqueda y Triggers de auditoría.
-* **Escalabilidad:** Diseñado para ser integrado con un backend en **Java / Spring Boot**.
 
-## 📂 Contenido del Repo
-* `/1_Estructura_Clinica_Villaro.sql`: Script de creación del esquema.
-* `/2_Datos_y_Objetos_Villaro.sql`: Scripts de carga de datos y creación de lógica (Views/Functions).
-* `Informe de Proyecto Final.pdf`: Documentación detallada del proyecto.
+- **Arquitectura Relacional:** 15 tablas interconectadas con integridad referencial que cubren la gestión de Pacientes, Médicos, Especialidades, Turnos, Insumos y Facturación.
+- **Lógica Programable e Inteligencia:** Implementación de Vistas para reportes operativos, Funciones personalizadas de consulta y Triggers de auditoría.
+- **Escalabilidad:** Estructura diseñada y normalizada para integrarse directamente con un backend en **Java / Spring Boot**.
 
-## 🛠️ Instalación y Uso
-1. Ejecutar el script `1_Estructura_Clinica_Villaro.sql` para crear la base de datos y sus entidades.
-2. Ejecutar el script `2_Datos_y_Objetos_Villaro.sql` para cargar los datos de prueba y habilitar las funciones/vistas.
+---
+
+## 🛠️ Tecnologías Utilizadas
+
+- **Motor de Base de Datos:** MySQL
+- **Herramientas:** MySQL Workbench
+- **Conceptos Aplicados:** Modelado EER, Normalización, Integridad Referencial, Vistas, Funciones y Triggers.
+
+---
+
+## 📂 Contenido del Repositorio
+
+- `1_Estructura_Clinica_Villaro.sql`: Script DDL de creación de la base de datos, tablas y relaciones.
+- `2_Datos_y_Objetos_Villaro.sql`: Script DML de carga de datos y creación de objetos programables (Views, Functions y Triggers).
+- `Informe de Proyecto Final.pdf`: Documentación técnica completa, diagramas y especificaciones del sistema.
+
+---
+
+## ⚙️ Instalación y Ejecución
+
+1. Ejecutar el script `1_Estructura_Clinica_Villaro.sql` en MySQL Workbench para crear el esquema y sus entidades.
+2. Ejecutar el script `2_Datos_y_Objetos_Villaro.sql` para poblar las tablas con datos de prueba y habilitar las vistas, funciones y triggers.
+
+---
 
 ## 👤 Autor
-* **Gaston Alexander Villaro** - *Desarrollador Backend / Java Junior*
+
+- **Gastón Alexander Villaro** — *Desarrollador Backend / Java & Especialista en Bases de Datos SQL*
